@@ -1616,6 +1616,18 @@
             // زیادکردنی loading state
             document.body.classList.add('loading');
             
+            // چێککردنی ئەگەر لە GitHub Pages بین
+            const isGitHubPages = window.location.hostname.includes('github.io');
+            
+            if (isGitHubPages) {
+                // لە GitHub Pages، تەنها نیشاندانی پەیام
+                document.body.classList.remove('loading');
+                showStatus('ℹ️ لە GitHub Pages، نرخەکان بە دەستی نوێ دەکرێنەوە. بۆ نوێکردنەوەی ئۆتۆماتیک، سێرڤەر پێویستە.', 'info');
+                lastUpdateTime = new Date();
+                updateTime();
+                return;
+            }
+            
             // بانگکردنی API ی refresh بۆ سکراپینگی نوێ
             try {
                 console.log('🔄 داواکردنی سکراپینگی نوێ لە سێرڤەر...');
