@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-03-23T05:12:10.551Z",
+  "timestamp": "2026-03-23T05:17:10.431Z",
   "currency": {
     "usd_buy": 153750,
     "usd_sell": 154750,
@@ -31,21 +31,21 @@
     "aud_sell": 68.5
   },
   "gold": {
-    "gold18_official": 825417,
-    "gold21_official": 962986,
-    "gold22_official": 1008842,
-    "gold18_buy": 796541,
-    "gold21_buy": 935986,
-    "gold22_buy": 975438,
-    "lira21": 970986,
-    "lira22": 1394700,
-    "kilo_gold_sell": 140138,
-    "kilo_gold_buy": 139738,
-    "kilo_silver_sell": 2126,
-    "kilo_silver_buy": 2126,
-    "gold18": 825417,
-    "gold21": 962986,
-    "gold22": 1008842
+    "gold18_official": 825223,
+    "gold21_official": 962760,
+    "gold22_official": 1008606,
+    "gold18_buy": 796348,
+    "gold21_buy": 935760,
+    "gold22_buy": 975203,
+    "lira21": 970760,
+    "lira22": 1394375,
+    "kilo_gold_sell": 140105,
+    "kilo_gold_buy": 139705,
+    "kilo_silver_sell": 2125,
+    "kilo_silver_buy": 2125,
+    "gold18": 825223,
+    "gold21": 962760,
+    "gold22": 1008606
   },
   "status": "success"
 }

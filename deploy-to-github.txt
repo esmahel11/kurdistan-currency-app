@@ -1,0 +1,35 @@
+هەنگاوەکانی Upload کردن بۆ GitHub
+==========================================
+
+١. دروستکردنی Repository لە GitHub:
+   - بڕۆ بۆ: https://github.com/new
+   - ناو: kurdistan-currency-app
+   - Public هەڵبژێرە
+   - Create repository کرتە بکە
+
+٢. کۆپی کردنی URL ی repository:
+   - لە پەیجی repository، دوگمەی سەوز "Code" کرتە بکە
+   - URL ەکە کۆپی بکە (وەک: https://github.com/username/repo.git)
+
+٣. لە تێرمیناڵ، ئەم فەرمانانە بنووسە:
+
+git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO.git
+git branch -M main
+git push -u origin main
+
+(YOUR-USERNAME و YOUR-REPO بگۆڕە بە ناوی خۆت!)
+
+٤. چاوەڕوانی بکە تا upload تەواو بێت
+
+٥. چالاککردنی GitHub Pages:
+   - لە repository، بڕۆ بۆ Settings
+   - لە لای چەپ، Pages کرتە بکە
+   - لە Source، هەڵبژێرە: main branch
+   - Save کرتە بکە
+
+٦. چاوەڕوانی ٢-٣ خولەک بکە
+
+٧. وێبسایتەکەت ئامادەیە لە:
+   https://YOUR-USERNAME.github.io/YOUR-REPO/
+
+تەواو! 🎉
