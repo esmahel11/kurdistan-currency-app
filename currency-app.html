@@ -1409,8 +1409,7 @@
                 console.log('✅ وەڵامی سێرڤەر:', data);
                 
                 if (data.status === 'success' && data.currency && data.gold) {
-                    // نوێکردنەوەی نرخەکانی دراو - نرخەکان ڕاستەوخۆ لە سێرڤەرەوە دێن
-                    // دۆلار
+                    // نوێکردنەوەی نرخەکانی دراو
                     if (data.currency.usd_buy) rates.usd_buy = data.currency.usd_buy;
                     if (data.currency.usd_sell) rates.usd_sell = data.currency.usd_sell;
                     
@@ -1616,22 +1615,17 @@
             // زیادکردنی loading state
             document.body.classList.add('loading');
             
-            // چێککردنی ئەگەر لە GitHub Pages بین
-            const isGitHubPages = window.location.hostname.includes('github.io');
-            
-            if (isGitHubPages) {
-                // لە GitHub Pages، تەنها نیشاندانی پەیام
-                document.body.classList.remove('loading');
-                showStatus('ℹ️ لە GitHub Pages، نرخەکان بە دەستی نوێ دەکرێنەوە. بۆ نوێکردنەوەی ئۆتۆماتیک، سێرڤەر پێویستە.', 'info');
-                lastUpdateTime = new Date();
-                updateTime();
-                return;
-            }
-            
-            // بانگکردنی API ی refresh بۆ سکراپینگی نوێ
+            // وەرگرتنی نرخەکان لە فایلی JSON
             try {
-                console.log('🔄 داواکردنی سکراپینگی نوێ لە سێرڤەر...');
-                const response = await fetch('http://localhost:3000/api/refresh');
+                console.log('🔄 وەرگرتنی نرخەکان...');
+                const response = await fetch('current-prices.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('✅ نرخەکان وەرگیران:', data);
                 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -1714,15 +1708,8 @@
                 
             } catch (error) {
                 console.error('❌ هەڵە:', error);
-                // ئەگەر سێرڤەر کار نەکرد، هەوڵ بدە لە cache
-                const cacheSuccess = await fetchRudawRates();
-                if (cacheSuccess) {
-                    console.log('⚠️ نرخەکان لە cache وەرگیران');
-                    showStatus('⚠️ نرخەکان لە cache وەرگیران', 'info');
-                } else {
-                    console.log('❌ نەتوانرا نرخەکان نوێ بکرێنەوە');
-                    showStatus('❌ سێرڤەر کار نەکرد - تکایە دواتر هەوڵ بدەرەوە', 'error');
-                }
+                console.log('⚠️ بەکارهێنانی نرخە سەرەتاییەکان');
+                showStatus('⚠️ نرخە سەرەتاییەکان پیشان دەدرێن', 'info');
             }
             
             // لابردنی loading state
