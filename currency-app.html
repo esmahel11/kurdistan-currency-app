@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="سیستەمی دراو و نرخەکان - نرخی دۆلار، یۆرۆ، زێڕ لە کوردستان">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>سیستەمی دراو و نرخەکان</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), 0 0 40px rgba(255, 215, 0, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.5), 0 0 60px rgba(255, 215, 0, 0.3); }
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
+            position: relative;
+            -webkit-text-size-adjust: 100%;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 40px;
+            font-size: 3em;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            animation: float 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 215, 0, 0.6);
+            box-shadow: 
+                0 15px 50px rgba(255, 215, 0, 0.3),
+                0 0 50px rgba(138, 43, 226, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.6em;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .currency-item, .gold-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px;
+            margin: 12px 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            border-radius: 12px;
+            border-right: 4px solid #ffd700;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .currency-item::before, .gold-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1));
+            transition: width 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .currency-item:hover::before, .gold-item:hover::before {
+            width: 100%;
+        }
+
+        .currency-item:hover, .gold-item:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(138, 43, 226, 0.1));
+            border-right-color: #8a2be2;
+            transform: translateX(-5px);
+        }
+
+        .currency-name, .gold-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .currency-value, .gold-value {
+            font-size: 1.2em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            flex-wrap: wrap;
+        }
+
+        .indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .indicator::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .up {
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+        }
+
+        .down {
+            background: linear-gradient(135deg, #ff4757, #ff3838);
+            box-shadow: 0 0 15px rgba(255, 71, 87, 0.6);
+        }
+
+        .input-group {
+            margin: 18px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #ffd700;
+            font-weight: 600;
+            font-size: 1.05em;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 1.05em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            touch-action: manipulation;
+            -webkit-appearance: none;
+        }
+
+        .input-group select option {
+            background: #1a1a2e;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        .input-group select optgroup {
+            background: #16213e;
+            color: #ffd700;
+            font-weight: 700;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .result {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(138, 43, 226, 0.2));
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 15px;
+            padding: 18px;
+            margin-top: 18px;
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #ffd700;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .customs-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .customs-table th, .customs-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .customs-table th {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(138, 43, 226, 0.3));
+            color: #ffd700;
+            font-weight: 700;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .customs-table td {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+        }
+
+        .customs-table tr:hover td {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700);
+            background-size: 200% 100%;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        button:hover::before {
+            left: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
+            background-position: 100% 0;
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        .last-update {
+            text-align: center;
+            color: rgba(255, 215, 0, 0.8);
+            margin-top: 30px;
+            font-size: 1em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            font-weight: 500;
+        }
+        
+        /* Loading Animation */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading button::before {
+            content: '⏳';
+            display: inline-block;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                padding-top: max(10px, env(safe-area-inset-top));
+                padding-bottom: max(10px, env(safe-area-inset-bottom));
+                padding-left: max(10px, env(safe-area-inset-left));
+                padding-right: max(10px, env(safe-area-inset-right));
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+                letter-spacing: 1px;
+            }
+            
+            h1::after {
+                width: 150px;
+            }
+            
+            .card {
+                padding: 20px;
+                border-radius: 15px;
+            }
+            
+            .card-title {
+                font-size: 1.3em;
+                margin-bottom: 15px;
+                padding-bottom: 12px;
+            }
+            
+            .currency-item, .gold-item {
+                padding: 12px;
+                margin: 8px 0;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            
+            .currency-name, .gold-name {
+                font-size: 0.95em;
+                width: 100%;
+            }
+            
+            .currency-value, .gold-value {
+                font-size: 0.9em;
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .currency-value > span,
+            .gold-value > span {
+                font-size: 0.85em !important;
+            }
+            
+            /* باشکردنی نیشاندانی نرخەکانی کڕین و فرۆشتن لە تابلێت */
+            .currency-value[style*="flex-direction: column"] {
+                gap: 6px !important;
+            }
+            
+            .currency-value[style*="flex-direction: column"] > span {
+                width: 100%;
+            }
+            
+            .input-group {
+                margin: 12px 0;
+            }
+            
+            .input-group label {
+                font-size: 0.95em;
+                margin-bottom: 8px;
+            }
+            
+            .input-group input,
+            .input-group select {
+                padding: 12px;
+                font-size: 1em;
+                border-radius: 10px;
+            }
+            
+            button {
+                padding: 14px;
+                font-size: 1em;
+                margin-top: 10px;
+                border-radius: 10px;
+                min-height: 48px;
+            }
+            
+            .result {
+                padding: 15px;
+                font-size: 1.05em;
+                margin-top: 15px;
+                border-radius: 12px;
+            }
+            
+            .customs-table {
+                font-size: 0.9em;
+            }
+            
+            .customs-table th,
+            .customs-table td {
+                padding: 10px 8px;
+                font-size: 0.9em;
+            }
+            
+            .last-update {
+                font-size: 0.9em;
+                margin-top: 20px;
+            }
+            
+            .last-update button {
+                padding: 12px 24px;
+                font-size: 0.95em;
+                min-height: 48px;
+            }
+            
+            #customs-warning {
+                font-size: 0.9em;
+                padding: 12px;
+            }
+            
+            .card > div[style*="margin-top: 15px"] {
+                font-size: 0.85em !important;
+                padding: 12px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+                padding-top: max(8px, env(safe-area-inset-top));
+                padding-bottom: max(8px, env(safe-area-inset-bottom));
+                padding-left: max(8px, env(safe-area-inset-left));
+                padding-right: max(8px, env(safe-area-inset-right));
+            }
+            
+            h1 {
+                font-size: 1.4em;
+                margin-bottom: 15px;
+                letter-spacing: 0.5px;
+            }
+            
+            h1::after {
+                width: 120px;
+                height: 2px;
+            }
+            
+            .grid {
+                gap: 12px;
+            }
+            
+            .card {
+                padding: 15px;
+                border-radius: 12px;
+            }
+            
+            .card-title {
+                font-size: 1.05em;
+                margin-bottom: 12px;
+                padding-bottom: 10px;
+            }
+            
+            .currency-item, .gold-item {
+                padding: 10px;
+                margin: 6px 0;
+                border-radius: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            
+            .currency-name, .gold-name {
+                font-size: 0.85em;
+                width: 100%;
+            }
+            
+            .currency-value, .gold-value {
+                font-size: 0.85em;
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .currency-value > span,
+            .gold-value > span {
+                font-size: 0.8em !important;
+            }
+            
+            .indicator {
+                width: 10px;
+                height: 10px;
+            }
+            
+            .indicator::after {
+                width: 6px;
+                height: 6px;
+            }
+            
+            .input-group {
+                margin: 10px 0;
+            }
+            
+            .input-group label {
+                font-size: 0.85em;
+                margin-bottom: 6px;
+            }
+            
+            .input-group input,
+            .input-group select {
+                padding: 11px;
+                font-size: 0.9em;
+                border-radius: 10px;
+            }
+            
+            button {
+                padding: 12px;
+                font-size: 0.9em;
+                margin-top: 8px;
+                border-radius: 10px;
+                min-height: 44px;
+            }
+            
+            .result {
+                padding: 12px;
+                font-size: 0.95em;
+                margin-top: 12px;
+                border-radius: 10px;
+            }
+            
+            .customs-table {
+                font-size: 0.8em;
+            }
+            
+            .customs-table th,
+            .customs-table td {
+                padding: 8px 6px;
+                font-size: 0.85em;
+            }
+            
+            .last-update {
+                font-size: 0.85em;
+                margin-top: 15px;
+            }
+            
+            .last-update button {
+                padding: 10px 20px;
+                font-size: 0.85em;
+                min-height: 44px;
+            }
+            
+            #customs-warning {
+                font-size: 0.85em;
+                padding: 10px;
+            }
+            
+            .card > div[style*="margin-top: 15px"],
+            .card > div[style*="margin-top: 10px"] {
+                font-size: 0.8em !important;
+                padding: 10px !important;
+                margin-top: 10px !important;
+                line-height: 1.6 !important;
+            }
+            
+            .card ul {
+                margin: 8px 0 0 15px !important;
+                line-height: 1.6 !important;
+            }
+            
+            .card ul li {
+                margin-bottom: 4px;
+            }
+            
+            #zakat-result > div {
+                font-size: 0.9em !important;
+            }
+        }
+        
+        /* دۆخی landscape بۆ مۆبایل */
+        @media (max-width: 896px) and (orientation: landscape) {
+            body {
+                padding: 8px;
+            }
+            
+            h1 {
+                font-size: 1.3em;
+                margin-bottom: 12px;
+            }
+            
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .card-title {
+                font-size: 1.1em;
+                margin-bottom: 10px;
+            }
+            
+            .currency-item, .gold-item {
+                padding: 8px;
+                margin: 6px 0;
+            }
+            
+            .input-group {
+                margin: 8px 0;
+            }
+            
+            button {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+            
+            .result {
+                padding: 10px;
+                font-size: 0.95em;
+            }
+        }
+        
+        /* دۆخی تابلێتی گەورە */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .card {
+                padding: 25px;
+            }
+        }
+        
+        /* مۆبایلی زۆر بچووک (< 360px) */
+        @media (max-width: 360px) {
+            body {
+                padding: 5px;
+            }
+            
+            h1 {
+                font-size: 1.2em;
+                margin-bottom: 10px;
+            }
+            
+            .card {
+                padding: 12px;
+            }
+            
+            .card-title {
+                font-size: 1em;
+            }
+            
+            .currency-item, .gold-item {
+                padding: 8px;
+                margin: 5px 0;
+            }
+            
+            .currency-name, .gold-name {
+                font-size: 0.8em;
+            }
+            
+            .currency-value, .gold-value {
+                font-size: 0.8em;
+            }
+            
+            .input-group input,
+            .input-group select {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+            
+            button {
+                padding: 11px;
+                font-size: 0.85em;
+            }
+            
+            .result {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+            
+            .customs-table th,
+            .customs-table td {
+                padding: 6px 4px;
+                font-size: 0.75em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏦 سیستەمی دراو و نرخەکان 💰</h1>
+
+        <div class="grid">
+            <!-- نرخی دراو -->
+            <div class="card">
+                <div class="card-title">🪙 نرخی دراو — نرخی دۆلار، تمەن، لیرە بەرامبەر دینار</div>
+                <div class="currency-item">
+                    <span class="currency-name">١٠٠ دۆلار ئەمریکی</span>
+                    <span class="currency-value" style="flex-direction: column; align-items: flex-end; gap: 4px;">
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span class="indicator up"></span>
+                            <span style="font-size: 0.85em; color: #4ade80;">کڕین:</span>
+                            <span id="usd-buy-rate" style="font-size: 1.1em;">154,400</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 0.85em; color: #f87171;">فرۆشتن:</span>
+                            <span id="usd-sell-rate" style="font-size: 1.1em;">154,550</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                    </span>
+                </div>
+                <div class="currency-item">
+                    <span class="currency-name">١٠٠ یۆرۆ</span>
+                    <span class="currency-value" style="flex-direction: column; align-items: flex-end; gap: 4px;">
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span class="indicator up"></span>
+                            <span style="font-size: 0.85em; color: #4ade80;">کڕین:</span>
+                            <span id="eur-buy-rate" style="font-size: 1.1em;">165,000</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 0.85em; color: #f87171;">فرۆشتن:</span>
+                            <span id="eur-sell-rate" style="font-size: 1.1em;">167,000</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                    </span>
+                </div>
+                <div class="currency-item">
+                    <span class="currency-name">١٠٠ پاوەندی ئینگلیزی</span>
+                    <span class="currency-value" style="flex-direction: column; align-items: flex-end; gap: 4px;">
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span class="indicator down"></span>
+                            <span style="font-size: 0.85em; color: #4ade80;">کڕین:</span>
+                            <span id="gbp-buy-rate" style="font-size: 1.1em;">185,000</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 0.85em; color: #f87171;">فرۆشتن:</span>
+                            <span id="gbp-sell-rate" style="font-size: 1.1em;">187,000</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                    </span>
+                </div>
+                <div class="currency-item">
+                    <span class="currency-name">١٠٠,٠٠٠ تمەنی ئێرانی</span>
+                    <span class="currency-value" style="flex-direction: column; align-items: flex-end; gap: 4px;">
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span class="indicator down"></span>
+                            <span style="font-size: 0.85em; color: #4ade80;">کڕین:</span>
+                            <span id="irr-buy-rate" style="font-size: 1.1em;">3,500</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 0.85em; color: #f87171;">فرۆشتن:</span>
+                            <span id="irr-sell-rate" style="font-size: 1.1em;">3,600</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                    </span>
+                </div>
+                <div class="currency-item">
+                    <span class="currency-name">١٠٠ لیرەی تورکی</span>
+                    <span class="currency-value" style="flex-direction: column; align-items: flex-end; gap: 4px;">
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span class="indicator up"></span>
+                            <span style="font-size: 0.85em; color: #4ade80;">کڕین:</span>
+                            <span id="try-buy-rate" style="font-size: 1.1em;">4,500</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 0.85em; color: #f87171;">فرۆشتن:</span>
+                            <span id="try-sell-rate" style="font-size: 1.1em;">4,400</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                    </span>
+                </div>
+                <div class="currency-item">
+                    <span class="currency-name">١٠٠ ڕیاڵی سعوودی</span>
+                    <span class="currency-value" style="flex-direction: column; align-items: flex-end; gap: 4px;">
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span class="indicator up"></span>
+                            <span style="font-size: 0.85em; color: #4ade80;">کڕین:</span>
+                            <span id="sar-buy-rate" style="font-size: 1.1em;">4,000</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 0.85em; color: #f87171;">فرۆشتن:</span>
+                            <span id="sar-sell-rate" style="font-size: 1.1em;">3,900</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                    </span>
+                </div>
+                <div class="currency-item">
+                    <span class="currency-name">١٠٠ درهەمی ئیماراتی</span>
+                    <span class="currency-value" style="flex-direction: column; align-items: flex-end; gap: 4px;">
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span class="indicator up"></span>
+                            <span style="font-size: 0.85em; color: #4ade80;">کڕین:</span>
+                            <span id="aed-buy-rate" style="font-size: 1.1em;">4,200</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 0.85em; color: #f87171;">فرۆشتن:</span>
+                            <span id="aed-sell-rate" style="font-size: 1.1em;">4,100</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                    </span>
+                </div>
+                <div class="currency-item">
+                    <span class="currency-name">١٠٠ دیناری ئوردنی</span>
+                    <span class="currency-value" style="flex-direction: column; align-items: flex-end; gap: 4px;">
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span class="indicator down"></span>
+                            <span style="font-size: 0.85em; color: #4ade80;">کڕین:</span>
+                            <span id="jod-buy-rate" style="font-size: 1.1em;">21,000</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                        <span style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 0.85em; color: #f87171;">فرۆشتن:</span>
+                            <span id="jod-sell-rate" style="font-size: 1.1em;">20,800</span>
+                            <span style="font-size: 0.9em;">د.ع</span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- نرخی زێڕ -->
+            <div class="card">
+                <div class="card-title">🥇 نرخی زێڕ — مسقاڵی عەیار ١٨، ٢١، ٢٢</div>
+                
+                <div style="margin: 10px 0; padding: 10px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                    <strong style="color: #ffd700;">نرخی فەرمی سەندیکای زێڕنگران</strong>
+                </div>
+                
+                <div class="gold-item">
+                    <span class="gold-name">عەیار ٢١</span>
+                    <span class="gold-value">
+                        <span class="indicator up"></span>
+                        <span id="gold-21-official">957,899</span> د.ع
+                    </span>
+                </div>
+                <div class="gold-item">
+                    <span class="gold-name">عەیار ٢٢</span>
+                    <span class="gold-value">
+                        <span class="indicator up"></span>
+                        <span id="gold-22-official">1,003,514</span> د.ع
+                    </span>
+                </div>
+                <div class="gold-item">
+                    <span class="gold-name">عەیار ١٨</span>
+                    <span class="gold-value">
+                        <span class="indicator down"></span>
+                        <span id="gold-18-official">821,057</span> د.ع
+                    </span>
+                </div>
+                
+                <div style="margin: 15px 0 10px 0; padding: 10px; background: rgba(138, 43, 226, 0.1); border-radius: 8px;">
+                    <strong style="color: #ffd700;">کڕینەوەی زێڕ (بۆ هاووڵاتی)</strong>
+                </div>
+                
+                <div class="gold-item">
+                    <span class="gold-name">عەیار ٢١</span>
+                    <span class="gold-value">
+                        <span class="indicator up"></span>
+                        <span id="gold-21-buy">930,899</span> د.ع
+                    </span>
+                </div>
+                <div class="gold-item">
+                    <span class="gold-name">عەیار ٢٢</span>
+                    <span class="gold-value">
+                        <span class="indicator up"></span>
+                        <span id="gold-22-buy">970,131</span> د.ع
+                    </span>
+                </div>
+                <div class="gold-item">
+                    <span class="gold-name">عەیار ١٨</span>
+                    <span class="gold-value">
+                        <span class="indicator down"></span>
+                        <span id="gold-18-buy">792,198</span> د.ع
+                    </span>
+                </div>
+                
+                <div style="margin: 15px 0 10px 0; padding: 10px; background: rgba(255, 215, 0, 0.1); border-radius: 8px;">
+                    <strong style="color: #ffd700;">لیرەی زێڕ</strong>
+                </div>
+                
+                <div class="gold-item">
+                    <span class="gold-name">لیرە عەیار ٢١</span>
+                    <span class="gold-value">
+                        <span class="indicator up"></span>
+                        <span id="lira-21">965,899</span> د.ع
+                    </span>
+                </div>
+                <div class="gold-item">
+                    <span class="gold-name">لیرە عەیار ٢٢</span>
+                    <span class="gold-value">
+                        <span class="indicator up"></span>
+                        <span id="lira-22">1,387,375</span> د.ع
+                    </span>
+                </div>
+            </div>
+
+            <!-- گۆڕینەوەی دراو -->
+            <div class="card">
+                <div class="card-title">💱 گۆڕینەوەی دراو — کەلکوولاتەری هەموو دراوەکان</div>
+                <div class="input-group">
+                    <label>جۆری دراو:</label>
+                    <select id="currency-type">
+                        <optgroup label="دۆلار ↔ دینار">
+                            <option value="usd-to-iqd">دۆلار → دینار</option>
+                            <option value="iqd-to-usd">دینار → دۆلار</option>
+                        </optgroup>
+                        <optgroup label="یۆرۆپی ↔ دینار">
+                            <option value="eur-to-iqd">یۆرۆ → دینار</option>
+                            <option value="iqd-to-eur">دینار → یۆرۆ</option>
+                            <option value="gbp-to-iqd">پاوەند → دینار</option>
+                            <option value="iqd-to-gbp">دینار → پاوەند</option>
+                        </optgroup>
+                        <optgroup label="ناوچەی ناوەڕاست ↔ دینار">
+                            <option value="irr-to-iqd">تمەن → دینار</option>
+                            <option value="iqd-to-irr">دینار → تمەن</option>
+                            <option value="try-to-iqd">لیرە → دینار</option>
+                            <option value="iqd-to-try">دینار → لیرە</option>
+                            <option value="sar-to-iqd">ڕیاڵ سعوودی → دینار</option>
+                            <option value="iqd-to-sar">دینار → ڕیاڵ سعوودی</option>
+                            <option value="aed-to-iqd">درهەم ئیماراتی → دینار</option>
+                            <option value="iqd-to-aed">دینار → درهەم ئیماراتی</option>
+                            <option value="jod-to-iqd">دینار ئوردنی → دینار</option>
+                            <option value="iqd-to-jod">دینار → دینار ئوردنی</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>بڕی دراو:</label>
+                    <input type="number" id="currency-amount" placeholder="بڕەکە بنووسە" value="100">
+                </div>
+                <button onclick="convertCurrency()">گۆڕینەوە</button>
+                <div class="result" id="conversion-result">ئەنجام لێرە دەردەکەوێت</div>
+            </div>
+
+            <!-- هەژمارکەری گومرگ -->
+            <div class="card">
+                <div class="card-title">🚗 گومرگ — خەمڵێنەری تێچووی گومرگی ئۆتۆمبێل</div>
+                
+                <div class="input-group">
+                    <label>ناوچە:</label>
+                    <select id="car-region">
+                        <option value="kurdistan">هەرێمی کوردستان</option>
+                        <option value="iraq">عێراق</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>جۆری ئۆتۆمبێل:</label>
+                    <select id="car-type">
+                        <option value="new">ئۆتۆمبێلی نوێ (2025+)</option>
+                        <option value="hybrid">هایبرید</option>
+                        <option value="suv">SUV / بەکارهێنەری زۆری وزە</option>
+                        <option value="damaged">کۆن یان زیانلێکەوتوو</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label>نرخی ئۆتۆمبێل (دۆلار):</label>
+                    <input type="number" id="car-price" placeholder="نرخ بە دۆلار" value="20000">
+                </div>
+                
+                <button onclick="calculateCustoms()">هەژمارکردن</button>
+                
+                <div id="customs-warning" style="display:none; margin-top: 15px; padding: 15px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1)); border: 2px solid rgba(239, 68, 68, 0.5); border-radius: 12px; color: #ef4444; font-weight: 600; text-align: center;">
+                    ⚠️ ئەم جۆرە ئۆتۆمبێلە قەدەغەیە (بەپێی TR 167)
+                </div>
+                
+                <table class="customs-table" id="customs-table" style="display:none;">
+                    <tr>
+                        <th>بابەت</th>
+                        <th>بڕ</th>
+                    </tr>
+                    <tr>
+                        <td>نرخی ئۆتۆمبێل</td>
+                        <td id="customs-price">-</td>
+                    </tr>
+                    <tr>
+                        <td>باجی گومرگ</td>
+                        <td id="customs-tax">-</td>
+                    </tr>
+                    <tr>
+                        <td>کۆی گشتی</td>
+                        <td id="customs-total">-</td>
+                    </tr>
+                </table>
+                
+                <div style="margin-top: 15px; padding: 15px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05)); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; font-size: 0.9em; color: #60a5fa;">
+                    <strong>تێبینی:</strong>
+                    <ul style="margin: 10px 0 0 20px; line-height: 1.8;">
+                        <li>لە هەرێمی کوردستان: هایبرید بەخشراوە لە باج</li>
+                        <li>لە عێراق: هایبرید باجی ١٥٪ لەسەرە</li>
+                        <li>ئۆتۆمبێلی کۆن یان زیانلێکەوتوو قەدەغەیە</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- هەژمارکردنی زەکات -->
+            <div class="card">
+                <div class="card-title">🕌 زەکات — هەژمارکردنی زەکات</div>
+                
+                <div class="input-group">
+                    <label>جۆری زەکات:</label>
+                    <select id="zakat-type">
+                        <option value="money">پارە و زێڕ (٢.٥٪)</option>
+                        <option value="rain-crop">کشتوکاڵ - ئاوی باران (١٠٪)</option>
+                        <option value="irrigated-crop">کشتوکاڵ - ئاوی دەستکرد (٥٪)</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label id="zakat-amount-label">بڕی پارە (دینار):</label>
+                    <input type="number" id="zakat-amount" placeholder="بڕەکە بنووسە" value="10000000">
+                </div>
+                
+                <button onclick="calculateZakat()">هەژماری زەکات</button>
+                
+                <div class="result" id="zakat-result">زەکات لێرە دەردەکەوێت</div>
+                
+                <div style="margin-top: 15px; padding: 15px; background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.05)); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 12px; font-size: 0.9em; color: #4ade80; line-height: 1.8;">
+                    <strong>📖 مەرجەکانی زەکات:</strong>
+                    <ul style="margin: 10px 0 0 20px;">
+                        <li><strong>پارە و زێڕ:</strong> ٢.٥٪ - پێویستە ساڵێک لەسەر تێپەڕبێت</li>
+                        <li><strong>کشتوکاڵ (باران):</strong> ١٠٪ - ئەگەر بە ئاوی باران ئاودرابێت</li>
+                        <li><strong>کشتوکاڵ (ئاودان):</strong> ٥٪ - ئەگەر بە ئاوی دەستکرد ئاودرابێت</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 15px; padding: 15px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05)); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; font-size: 0.9em; color: #60a5fa; line-height: 1.8;">
+                    <strong>🎯 خەرجییەکانی زەکات (٨ چین):</strong>
+                    <div style="margin: 10px 0 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        <span>١. هەژاران</span>
+                        <span>٢. نەداران</span>
+                        <span>٣. کارمەندانی زەکات</span>
+                        <span>٤. دڵنەرمکردنی دڵەکان</span>
+                        <span>٥. ئازادکردنی کۆیلە</span>
+                        <span>٦. قەرزاران</span>
+                        <span>٧. لە ڕێگای خوادا</span>
+                        <span>٨. ڕێبواران</span>
+                    </div>
+                    <div style="margin-top: 10px; font-size: 0.85em; opacity: 0.8;">
+                        سەرچاوە: قورئانی پیرۆز (سورەتی تەوبە: ٦٠)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="last-update">
+            ⏰ دوایین نوێکردنەوە: <span id="last-update"></span>
+            <button onclick="fetchAllRates()" style="width: auto; padding: 10px 30px; margin: 15px auto; display: block; font-size: 1em;">🔄 نوێکردنەوەی دەستی</button>
+        </div>
+        
+        <div id="api-status" style="text-align: center; margin-top: 15px; padding: 10px; border-radius: 10px; display: none;"></div>
+    </div>
+
+    <script>
+        // نرخەکانی دراو - نرخە سەرەتاییەکان
+        let rates = {
+            // دۆلار
+            usd_buy: 154400,
+            usd_sell: 154550,
+            // یۆرۆ
+            eur_buy: 177000,
+            eur_sell: 179000,
+            // پاوەند
+            gbp_buy: 202000,
+            gbp_sell: 205000,
+            // تمەن
+            irr_buy: 1100,
+            irr_sell: 1340,
+            // لیرە
+            try_buy: 4475,
+            try_sell: 4400,
+            // ڕیاڵ سعوودی
+            sar_buy: 39590,
+            sar_sell: 41200,
+            // درهەم ئیماراتی
+            aed_buy: 40100,
+            aed_sell: 42100,
+            // دینار ئوردنی
+            jod_buy: 208600,
+            jod_sell: 223700
+        };
+
+        // نرخەکانی زێڕ (بۆ مسقاڵێک) - نرخە ڕاستەقینەکانی Rudaw Index
+        let goldRates = {
+            // نرخی فەرمی
+            gold21_official: 957899,
+            gold22_official: 1003514,
+            gold18_official: 821057,
+            // کڕینەوە
+            gold21_buy: 930899,
+            gold22_buy: 970131,
+            gold18_buy: 792198,
+            // لیرە
+            lira21: 965899,
+            lira22: 1387375
+        };
+
+        let lastUpdateTime = null;
+
+        // پیشاندانی پەیامی ستاتوس
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('api-status');
+            statusDiv.style.display = 'block';
+            
+            if (type === 'error') {
+                statusDiv.style.background = 'linear-gradient(135deg, rgba(255, 71, 87, 0.2), rgba(255, 71, 87, 0.1))';
+                statusDiv.style.border = '1px solid rgba(255, 71, 87, 0.5)';
+                statusDiv.style.color = '#ff4757';
+            } else if (type === 'success') {
+                statusDiv.style.background = 'linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 255, 136, 0.1))';
+                statusDiv.style.border = '1px solid rgba(0, 255, 136, 0.5)';
+                statusDiv.style.color = '#00ff88';
+            } else {
+                statusDiv.style.background = 'linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 215, 0, 0.1))';
+                statusDiv.style.border = '1px solid rgba(255, 215, 0, 0.5)';
+                statusDiv.style.color = '#ffd700';
+            }
+            
+            statusDiv.textContent = message;
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // وەرگرتنی نرخەکان لە سێرڤەری ناوخۆیی
+        async function fetchFromLocalServer() {
+            try {
+                console.log('🔄 داواکردنی نرخەکان لە سێرڤەری ناوخۆیی...');
+                
+                const response = await fetch('http://localhost:3000/api/prices');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('✅ وەڵامی سێرڤەر:', data);
+                
+                if (data.status === 'success' && data.currency && data.gold) {
+                    // نوێکردنەوەی نرخەکانی دراو - نرخەکان ڕاستەوخۆ لە سێرڤەرەوە دێن
+                    // دۆلار
+                    if (data.currency.usd_buy) rates.usd_buy = data.currency.usd_buy;
+                    if (data.currency.usd_sell) rates.usd_sell = data.currency.usd_sell;
+                    
+                    // یۆرۆ (بە دۆلار، پێویستە بگۆڕدرێتەوە بۆ دینار)
+                    if (data.currency.eur_buy && data.currency.usd_buy) {
+                        rates.eur_buy = (data.currency.eur_buy / 100) * (data.currency.usd_buy / 100) * 100;
+                    }
+                    if (data.currency.eur_sell && data.currency.usd_sell) {
+                        rates.eur_sell = (data.currency.eur_sell / 100) * (data.currency.usd_sell / 100) * 100;
+                    }
+                    
+                    // پاوەند
+                    if (data.currency.gbp_buy && data.currency.usd_buy) {
+                        rates.gbp_buy = (data.currency.gbp_buy / 100) * (data.currency.usd_buy / 100) * 100;
+                    }
+                    if (data.currency.gbp_sell && data.currency.usd_sell) {
+                        rates.gbp_sell = (data.currency.gbp_sell / 100) * (data.currency.usd_sell / 100) * 100;
+                    }
+                    
+                    // تمەن (تومەن بۆ 100 دۆلار، پێویستە بگۆڕدرێتەوە بۆ دینار)
+                    if (data.currency.irr_buy && data.currency.usd_buy) {
+                        rates.irr_buy = (data.currency.usd_buy / data.currency.irr_buy) * 100000;
+                    }
+                    if (data.currency.irr_sell && data.currency.usd_sell) {
+                        rates.irr_sell = (data.currency.usd_sell / data.currency.irr_sell) * 100000;
+                    }
+                    
+                    // لیرە
+                    if (data.currency.try_buy) rates.try_buy = data.currency.try_buy;
+                    if (data.currency.try_sell) rates.try_sell = data.currency.try_sell;
+                    
+                    // ڕیاڵ سعوودی (ڕیاڵ بۆ 100 دۆلار)
+                    if (data.currency.sar_buy && data.currency.usd_buy) {
+                        rates.sar_buy = (data.currency.usd_buy / data.currency.sar_buy) * 100;
+                    }
+                    if (data.currency.sar_sell && data.currency.usd_sell) {
+                        rates.sar_sell = (data.currency.usd_sell / data.currency.sar_sell) * 100;
+                    }
+                    
+                    // درهەم ئیماراتی
+                    if (data.currency.aed_buy && data.currency.usd_buy) {
+                        rates.aed_buy = (data.currency.usd_buy / data.currency.aed_buy) * 100;
+                    }
+                    if (data.currency.aed_sell && data.currency.usd_sell) {
+                        rates.aed_sell = (data.currency.usd_sell / data.currency.aed_sell) * 100;
+                    }
+                    
+                    // دینار ئوردنی
+                    if (data.currency.jod_buy && data.currency.usd_buy) {
+                        rates.jod_buy = (data.currency.usd_buy / data.currency.jod_buy) * 100;
+                    }
+                    if (data.currency.jod_sell && data.currency.usd_sell) {
+                        rates.jod_sell = (data.currency.usd_sell / data.currency.jod_sell) * 100;
+                    }
+                    
+                    // نوێکردنەوەی نرخەکانی زێڕ
+                    if (data.gold.gold18_official) goldRates.gold18_official = data.gold.gold18_official;
+                    if (data.gold.gold21_official) goldRates.gold21_official = data.gold.gold21_official;
+                    if (data.gold.gold22_official) goldRates.gold22_official = data.gold.gold22_official;
+                    if (data.gold.gold18_buy) goldRates.gold18_buy = data.gold.gold18_buy;
+                    if (data.gold.gold21_buy) goldRates.gold21_buy = data.gold.gold21_buy;
+                    if (data.gold.gold22_buy) goldRates.gold22_buy = data.gold.gold22_buy;
+                    if (data.gold.lira21) goldRates.lira21 = data.gold.lira21;
+                    if (data.gold.lira22) goldRates.lira22 = data.gold.lira22;
+                    
+                    updateCurrencyDisplay();
+                    updateGoldDisplay();
+                    
+                    // پاشەکەوتکردن لە localStorage
+                    localStorage.setItem('rudawData', JSON.stringify(data));
+                    
+                    return true;
+                }
+                
+                throw new Error('داتای نادروست');
+                
+            } catch (error) {
+                console.error('❌ هەڵەی سێرڤەر:', error);
+                return false;
+            }
+        }
+
+        // وەرگرتنی نرخەکان لە Rudaw Index (لە localStorage)
+        async function fetchRudawRates() {
+            try {
+                console.log('🔄 داواکردنی نرخەکان لە cache...');
+                
+                const cachedData = localStorage.getItem('rudawData');
+                
+                if (cachedData) {
+                    const data = JSON.parse(cachedData);
+                    console.log('✅ نرخەکان لە cache وەرگیران:', data);
+                    
+                    if (data.currency && data.gold) {
+                        // نوێکردنەوەی نرخەکانی دراو
+                        if (data.currency.usd) {
+                            rates.usd = data.currency.usd / 100;
+                        }
+                        if (data.currency.eur && data.currency.usd) {
+                            rates.eur = (data.currency.eur / 100) * rates.usd;
+                        }
+                        if (data.currency.gbp && data.currency.usd) {
+                            rates.gbp = (data.currency.gbp / 100) * rates.usd;
+                        }
+                        if (data.currency.try) {
+                            rates.try = data.currency.try / 100;
+                        }
+                        if (data.currency.irr && data.currency.usd) {
+                            rates.irr = (100 / data.currency.irr) * rates.usd;
+                        }
+                        if (data.currency.sar && data.currency.usd) {
+                            rates.sar = (100 / data.currency.sar) * rates.usd;
+                        }
+                        if (data.currency.aed && data.currency.usd) {
+                            rates.aed = (100 / data.currency.aed) * rates.usd;
+                        }
+                        if (data.currency.jod && data.currency.usd) {
+                            rates.jod = (100 / data.currency.jod) * rates.usd;
+                        }
+                        
+                        // نوێکردنەوەی نرخەکانی زێڕ
+                        if (data.gold.gold18_official) goldRates.gold18_official = data.gold.gold18_official;
+                        if (data.gold.gold21_official) goldRates.gold21_official = data.gold.gold21_official;
+                        if (data.gold.gold22_official) goldRates.gold22_official = data.gold.gold22_official;
+                        if (data.gold.gold18_buy) goldRates.gold18_buy = data.gold.gold18_buy;
+                        if (data.gold.gold21_buy) goldRates.gold21_buy = data.gold.gold21_buy;
+                        if (data.gold.gold22_buy) goldRates.gold22_buy = data.gold.gold22_buy;
+                        if (data.gold.lira21) goldRates.lira21 = data.gold.lira21;
+                        if (data.gold.lira22) goldRates.lira22 = data.gold.lira22;
+                        
+                        updateCurrencyDisplay();
+                        updateGoldDisplay();
+                        return true;
+                    }
+                }
+                
+                console.log('⚠️ هیچ داتایەک لە cache نییە');
+                return false;
+                
+            } catch (error) {
+                console.error('❌ هەڵەی cache:', error);
+                return false;
+            }
+        }
+
+        // نوێکردنەوەی نیشاندانی نرخی دراو
+        function updateCurrencyDisplay() {
+            // دۆلار
+            document.getElementById('usd-buy-rate').textContent = rates.usd_buy ? rates.usd_buy.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            document.getElementById('usd-sell-rate').textContent = rates.usd_sell ? rates.usd_sell.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            
+            // یۆرۆ
+            document.getElementById('eur-buy-rate').textContent = rates.eur_buy ? rates.eur_buy.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            document.getElementById('eur-sell-rate').textContent = rates.eur_sell ? rates.eur_sell.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            
+            // پاوەند
+            document.getElementById('gbp-buy-rate').textContent = rates.gbp_buy ? rates.gbp_buy.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            document.getElementById('gbp-sell-rate').textContent = rates.gbp_sell ? rates.gbp_sell.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            
+            // تمەن
+            document.getElementById('irr-buy-rate').textContent = rates.irr_buy ? rates.irr_buy.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            document.getElementById('irr-sell-rate').textContent = rates.irr_sell ? rates.irr_sell.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            
+            // لیرە
+            document.getElementById('try-buy-rate').textContent = rates.try_buy ? rates.try_buy.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            document.getElementById('try-sell-rate').textContent = rates.try_sell ? rates.try_sell.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            
+            // ڕیاڵ سعوودی
+            document.getElementById('sar-buy-rate').textContent = rates.sar_buy ? rates.sar_buy.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            document.getElementById('sar-sell-rate').textContent = rates.sar_sell ? rates.sar_sell.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            
+            // درهەم ئیماراتی
+            document.getElementById('aed-buy-rate').textContent = rates.aed_buy ? rates.aed_buy.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            document.getElementById('aed-sell-rate').textContent = rates.aed_sell ? rates.aed_sell.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            
+            // دینار ئوردنی
+            document.getElementById('jod-buy-rate').textContent = rates.jod_buy ? rates.jod_buy.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+            document.getElementById('jod-sell-rate').textContent = rates.jod_sell ? rates.jod_sell.toLocaleString('en-US', {maximumFractionDigits: 0}) : '---';
+        }
+
+        // نوێکردنەوەی نیشاندانی نرخی زێڕ
+        function updateGoldDisplay() {
+            // نرخی فەرمی
+            if (goldRates.gold21_official) document.getElementById('gold-21-official').textContent = goldRates.gold21_official.toLocaleString('en-US');
+            if (goldRates.gold22_official) document.getElementById('gold-22-official').textContent = goldRates.gold22_official.toLocaleString('en-US');
+            if (goldRates.gold18_official) document.getElementById('gold-18-official').textContent = goldRates.gold18_official.toLocaleString('en-US');
+            
+            // کڕینەوە
+            if (goldRates.gold21_buy) document.getElementById('gold-21-buy').textContent = goldRates.gold21_buy.toLocaleString('en-US');
+            if (goldRates.gold22_buy) document.getElementById('gold-22-buy').textContent = goldRates.gold22_buy.toLocaleString('en-US');
+            if (goldRates.gold18_buy) document.getElementById('gold-18-buy').textContent = goldRates.gold18_buy.toLocaleString('en-US');
+            
+            // لیرە
+            if (goldRates.lira21) document.getElementById('lira-21').textContent = goldRates.lira21.toLocaleString('en-US');
+            if (goldRates.lira22) document.getElementById('lira-22').textContent = goldRates.lira22.toLocaleString('en-US');
+        }
+
+        // وەرگرتنی هەموو نرخەکان
+        async function fetchAllRates() {
+            console.log('🚀 دەستپێکردنی وەرگرتنی نرخەکان...');
+            showStatus('🔄 نوێکردنەوە...', 'info');
+            
+            // زیادکردنی loading state
+            document.body.classList.add('loading');
+            
+            // بانگکردنی API ی refresh بۆ سکراپینگی نوێ
+            try {
+                console.log('🔄 داواکردنی سکراپینگی نوێ لە سێرڤەر...');
+                const response = await fetch('http://localhost:3000/api/refresh');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('✅ وەڵامی سێرڤەر:', data);
+                
+                if (data.status === 'success' && data.currency && data.gold) {
+                    // نوێکردنەوەی نرخەکانی دراو
+                    if (data.currency.usd_buy) rates.usd_buy = data.currency.usd_buy;
+                    if (data.currency.usd_sell) rates.usd_sell = data.currency.usd_sell;
+                    
+                    if (data.currency.eur_buy && data.currency.usd_buy) {
+                        rates.eur_buy = (data.currency.eur_buy / 100) * (data.currency.usd_buy / 100) * 100;
+                    }
+                    if (data.currency.eur_sell && data.currency.usd_sell) {
+                        rates.eur_sell = (data.currency.eur_sell / 100) * (data.currency.usd_sell / 100) * 100;
+                    }
+                    
+                    if (data.currency.gbp_buy && data.currency.usd_buy) {
+                        rates.gbp_buy = (data.currency.gbp_buy / 100) * (data.currency.usd_buy / 100) * 100;
+                    }
+                    if (data.currency.gbp_sell && data.currency.usd_sell) {
+                        rates.gbp_sell = (data.currency.gbp_sell / 100) * (data.currency.usd_sell / 100) * 100;
+                    }
+                    
+                    if (data.currency.irr_buy && data.currency.usd_buy) {
+                        rates.irr_buy = (data.currency.usd_buy / data.currency.irr_buy) * 100000;
+                    }
+                    if (data.currency.irr_sell && data.currency.usd_sell) {
+                        rates.irr_sell = (data.currency.usd_sell / data.currency.irr_sell) * 100000;
+                    }
+                    
+                    if (data.currency.try_buy) rates.try_buy = data.currency.try_buy;
+                    if (data.currency.try_sell) rates.try_sell = data.currency.try_sell;
+                    
+                    if (data.currency.sar_buy && data.currency.usd_buy) {
+                        rates.sar_buy = (data.currency.usd_buy / data.currency.sar_buy) * 100;
+                    }
+                    if (data.currency.sar_sell && data.currency.usd_sell) {
+                        rates.sar_sell = (data.currency.usd_sell / data.currency.sar_sell) * 100;
+                    }
+                    
+                    if (data.currency.aed_buy && data.currency.usd_buy) {
+                        rates.aed_buy = (data.currency.usd_buy / data.currency.aed_buy) * 100;
+                    }
+                    if (data.currency.aed_sell && data.currency.usd_sell) {
+                        rates.aed_sell = (data.currency.usd_sell / data.currency.aed_sell) * 100;
+                    }
+                    
+                    if (data.currency.jod_buy && data.currency.usd_buy) {
+                        rates.jod_buy = (data.currency.usd_buy / data.currency.jod_buy) * 100;
+                    }
+                    if (data.currency.jod_sell && data.currency.usd_sell) {
+                        rates.jod_sell = (data.currency.usd_sell / data.currency.jod_sell) * 100;
+                    }
+                    
+                    // نوێکردنەوەی نرخەکانی زێڕ
+                    if (data.gold.gold18_official) goldRates.gold18_official = data.gold.gold18_official;
+                    if (data.gold.gold21_official) goldRates.gold21_official = data.gold.gold21_official;
+                    if (data.gold.gold22_official) goldRates.gold22_official = data.gold.gold22_official;
+                    if (data.gold.gold18_buy) goldRates.gold18_buy = data.gold.gold18_buy;
+                    if (data.gold.gold21_buy) goldRates.gold21_buy = data.gold.gold21_buy;
+                    if (data.gold.gold22_buy) goldRates.gold22_buy = data.gold.gold22_buy;
+                    if (data.gold.lira21) goldRates.lira21 = data.gold.lira21;
+                    if (data.gold.lira22) goldRates.lira22 = data.gold.lira22;
+                    
+                    updateCurrencyDisplay();
+                    updateGoldDisplay();
+                    
+                    // پاشەکەوتکردن لە localStorage
+                    localStorage.setItem('rudawData', JSON.stringify(data));
+                    
+                    console.log('✅ هەموو نرخەکان بەسەرکەوتوویی نوێکرانەوە');
+                    showStatus('✅ نرخەکان بەسەرکەوتوویی نوێکرانەوە', 'success');
+                } else {
+                    throw new Error('داتای نادروست');
+                }
+                
+            } catch (error) {
+                console.error('❌ هەڵە:', error);
+                // ئەگەر سێرڤەر کار نەکرد، هەوڵ بدە لە cache
+                const cacheSuccess = await fetchRudawRates();
+                if (cacheSuccess) {
+                    console.log('⚠️ نرخەکان لە cache وەرگیران');
+                    showStatus('⚠️ نرخەکان لە cache وەرگیران', 'info');
+                } else {
+                    console.log('❌ نەتوانرا نرخەکان نوێ بکرێنەوە');
+                    showStatus('❌ سێرڤەر کار نەکرد - تکایە دواتر هەوڵ بدەرەوە', 'error');
+                }
+            }
+            
+            // لابردنی loading state
+            document.body.classList.remove('loading');
+            
+            lastUpdateTime = new Date();
+            updateTime();
+        }
+
+        // نیشاندانی کاتی ئێستا
+        function updateTime() {
+            const now = lastUpdateTime || new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric', 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            };
+            document.getElementById('last-update').textContent = 
+                now.toLocaleDateString('ar-IQ', options);
+        }
+
+        // گۆڕینەوەی دراو
+        function convertCurrency() {
+            const type = document.getElementById('currency-type').value;
+            const amount = parseFloat(document.getElementById('currency-amount').value);
+            
+            if (isNaN(amount) || amount <= 0) {
+                document.getElementById('conversion-result').textContent = 
+                    'تکایە ژمارەیەکی دروست بنووسە';
+                return;
+            }
+
+            let result;
+            switch(type) {
+                // دۆلار
+                case 'usd-to-iqd':
+                    result = (amount * rates.usd).toLocaleString('en-US', {maximumFractionDigits: 0});
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} دۆلار = ${result} دینار`;
+                    break;
+                case 'iqd-to-usd':
+                    result = (amount / rates.usd).toFixed(2);
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} دینار = ${result} دۆلار`;
+                    break;
+                
+                // یۆرۆ
+                case 'eur-to-iqd':
+                    result = (amount * rates.eur).toLocaleString('en-US', {maximumFractionDigits: 0});
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} یۆرۆ = ${result} دینار`;
+                    break;
+                case 'iqd-to-eur':
+                    result = (amount / rates.eur).toFixed(2);
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} دینار = ${result} یۆرۆ`;
+                    break;
+                
+                // پاوەند
+                case 'gbp-to-iqd':
+                    result = (amount * rates.gbp).toLocaleString('en-US', {maximumFractionDigits: 0});
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} پاوەند = ${result} دینار`;
+                    break;
+                case 'iqd-to-gbp':
+                    result = (amount / rates.gbp).toFixed(2);
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} دینار = ${result} پاوەند`;
+                    break;
+                
+                // تمەن
+                case 'irr-to-iqd':
+                    result = (amount * rates.irr).toLocaleString('en-US', {maximumFractionDigits: 0});
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} تمەن = ${result} دینار`;
+                    break;
+                case 'iqd-to-irr':
+                    result = (amount / rates.irr).toFixed(0);
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} دینار = ${parseFloat(result).toLocaleString('en-US')} تمەن`;
+                    break;
+                
+                // لیرە
+                case 'try-to-iqd':
+                    result = (amount * rates.try).toLocaleString('en-US', {maximumFractionDigits: 0});
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} لیرە = ${result} دینار`;
+                    break;
+                case 'iqd-to-try':
+                    result = (amount / rates.try).toFixed(2);
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} دینار = ${result} لیرە`;
+                    break;
+                
+                // ڕیاڵ سعوودی
+                case 'sar-to-iqd':
+                    result = (amount * rates.sar).toLocaleString('en-US', {maximumFractionDigits: 0});
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} ڕیاڵ = ${result} دینار`;
+                    break;
+                case 'iqd-to-sar':
+                    result = (amount / rates.sar).toFixed(2);
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} دینار = ${result} ڕیاڵ`;
+                    break;
+                
+                // درهەم ئیماراتی
+                case 'aed-to-iqd':
+                    result = (amount * rates.aed).toLocaleString('en-US', {maximumFractionDigits: 0});
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} درهەم = ${result} دینار`;
+                    break;
+                case 'iqd-to-aed':
+                    result = (amount / rates.aed).toFixed(2);
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} دینار = ${result} درهەم`;
+                    break;
+                
+                // دینار ئوردنی
+                case 'jod-to-iqd':
+                    result = (amount * rates.jod).toLocaleString('en-US', {maximumFractionDigits: 0});
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} دینار ئوردنی = ${result} دینار عێراقی`;
+                    break;
+                case 'iqd-to-jod':
+                    result = (amount / rates.jod).toFixed(2);
+                    document.getElementById('conversion-result').textContent = 
+                        `${amount.toLocaleString('en-US')} دینار عێراقی = ${result} دینار ئوردنی`;
+                    break;
+                
+                default:
+                    document.getElementById('conversion-result').textContent = 
+                        'تکایە جۆری دراو هەڵبژێرە';
+            }
+        }
+
+        // هەژماری گومرگ
+        function calculateCustoms() {
+            const region = document.getElementById('car-region').value;
+            const carType = document.getElementById('car-type').value;
+            const price = parseFloat(document.getElementById('car-price').value);
+            
+            if (isNaN(price) || price <= 0) {
+                alert('تکایە نرخێکی دروست بنووسە');
+                return;
+            }
+
+            // شاردنەوەی ئاگادارکردنەوە و خشتە
+            document.getElementById('customs-warning').style.display = 'none';
+            document.getElementById('customs-table').style.display = 'none';
+
+            // چێککردنی ئۆتۆمبێلی قەدەغەکراو
+            if (carType === 'damaged') {
+                document.getElementById('customs-warning').style.display = 'block';
+                return;
+            }
+
+            // حیسابکردنی ڕێژەی باج
+            let taxRate = 0;
+            
+            if (region === 'kurdistan') {
+                // هەرێمی کوردستان
+                switch(carType) {
+                    case 'new':
+                        taxRate = 0.15; // ١٥٪
+                        break;
+                    case 'hybrid':
+                        taxRate = 0; // بەخشراوە
+                        break;
+                    case 'suv':
+                        taxRate = 0.20; // زیاتر لە ١٥٪
+                        break;
+                }
+            } else {
+                // عێراق
+                switch(carType) {
+                    case 'new':
+                        taxRate = 0.15; // ١٥٪
+                        break;
+                    case 'hybrid':
+                        taxRate = 0.15; // ١٥٪
+                        break;
+                    case 'suv':
+                        taxRate = 0.20; // زیاتر لە ١٥٪
+                        break;
+                }
+            }
+
+            // حیسابکردنی نرخەکان
+            const priceInIQD = price * (rates.usd_buy || 1544);
+            const tax = priceInIQD * taxRate;
+            const total = priceInIQD + tax;
+
+            // نیشاندانی ئەنجامەکان
+            document.getElementById('customs-price').textContent = 
+                priceInIQD.toLocaleString('en-US', {maximumFractionDigits: 0}) + ' د.ع';
+            
+            if (taxRate === 0) {
+                document.getElementById('customs-tax').textContent = 
+                    'بەخشراوە (٠ د.ع)';
+            } else {
+                document.getElementById('customs-tax').textContent = 
+                    tax.toLocaleString('en-US', {maximumFractionDigits: 0}) + ' د.ع (' + (taxRate * 100) + '٪)';
+            }
+            
+            document.getElementById('customs-total').textContent = 
+                total.toLocaleString('en-US', {maximumFractionDigits: 0}) + ' د.ع';
+            
+            document.getElementById('customs-table').style.display = 'table';
+        }
+
+        // هەژماری زەکات
+        function calculateZakat() {
+            const zakatType = document.getElementById('zakat-type').value;
+            const amount = parseFloat(document.getElementById('zakat-amount').value);
+            
+            if (isNaN(amount) || amount <= 0) {
+                document.getElementById('zakat-result').textContent = 
+                    'تکایە بڕێکی دروست بنووسە';
+                return;
+            }
+
+            let zakatRate = 0;
+            let zakatName = '';
+            
+            switch(zakatType) {
+                case 'money':
+                    zakatRate = 0.025; // ٢.٥٪
+                    zakatName = 'زەکاتی پارە و زێڕ';
+                    break;
+                case 'rain-crop':
+                    zakatRate = 0.10; // ١٠٪
+                    zakatName = 'زەکاتی کشتوکاڵ (باران)';
+                    break;
+                case 'irrigated-crop':
+                    zakatRate = 0.05; // ٥٪
+                    zakatName = 'زەکاتی کشتوکاڵ (ئاودان)';
+                    break;
+            }
+
+            const zakat = amount * zakatRate;
+            const percentage = (zakatRate * 100).toFixed(1);
+            
+            document.getElementById('zakat-result').innerHTML = 
+                `<div style="font-size: 1.1em; margin-bottom: 10px;">${zakatName}</div>` +
+                `<div style="font-size: 1.3em; color: #4ade80;">💰 ${zakat.toLocaleString('en-US', {maximumFractionDigits: 0})} دینار</div>` +
+                `<div style="font-size: 0.9em; margin-top: 8px; opacity: 0.8;">(${percentage}٪ لە ${amount.toLocaleString('en-US', {maximumFractionDigits: 0})} دینار)</div>`;
+        }
+        
+        // گۆڕینی لێبەڵی input بەپێی جۆری زەکات
+        document.addEventListener('DOMContentLoaded', function() {
+            const zakatTypeSelect = document.getElementById('zakat-type');
+            const zakatAmountLabel = document.getElementById('zakat-amount-label');
+            
+            if (zakatTypeSelect && zakatAmountLabel) {
+                zakatTypeSelect.addEventListener('change', function() {
+                    const type = this.value;
+                    if (type === 'money') {
+                        zakatAmountLabel.textContent = 'بڕی پارە (دینار):';
+                    } else {
+                        zakatAmountLabel.textContent = 'بڕی بەرهەم (دینار):';
+                    }
+                });
+            }
+        });
+
+        // نوێکردنەوەی نرخەکان بە شێوەیەکی هەڵکەوتی (بۆ نیشاندانی گۆڕانکاری)
+        function simulateRateChanges() {
+            // ئەمە تەنها بۆ نیشاندانی گۆڕانکارییە
+            // لە بەرنامەیەکی ڕاستەقینەدا، ئەمە لە API ـیەکەوە دێت
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach(indicator => {
+                if (Math.random() > 0.5) {
+                    indicator.className = 'indicator up';
+                } else {
+                    indicator.className = 'indicator down';
+                }
+            });
+        }
+
+        // دەستپێکردن
+        updateTime();
+        
+        // وەرگرتنی نرخەکان لە سەرەتادا
+        fetchAllRates();
+        
+        // نوێکردنەوەی ئۆتۆماتیک هەر ٥ خولەک (٣٠٠٠٠٠ میلی چرکە)
+        setInterval(fetchAllRates, 5 * 60 * 1000);
+        
+        // گۆڕینی نیشانەکان هەر ١٠ چرکە
+        setInterval(simulateRateChanges, 10000);
+        
+        console.log('✅ سیستەم دەستپێکرا - نوێکردنەوەی ئۆتۆماتیک هەر ٥ خولەک');
+    </script>
+</body>
+</html>

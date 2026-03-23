@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="سیستەمی دراو و نرخەکان - نرخی دۆلار، یۆرۆ، زێڕ لە کوردستان">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>سیستەمی دراو و نرخەکان</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 800px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        h1 {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        a {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #1a1a2e;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
+        }
+        
+        .info {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .info h2 {
+            color: #ffd700;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+        
+        .info ul {
+            list-style: none;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: right;
+        }
+        
+        .info li {
+            margin: 10px 0;
+            padding-right: 20px;
+        }
+        
+        .info li::before {
+            content: "✅ ";
+            margin-left: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            p {
+                font-size: 1em;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+            
+            a {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏦 سیستەمی دراو و نرخەکان 💰</h1>
+        
+        <p>
+            بەخێربێیت بۆ سیستەمی نرخی دراو و زێڕ!<br>
+            ئەم پرۆژەیە نرخەکانی دراو و زێڕ لە کوردستان پیشان دەدات.
+        </p>
+        
+        <div class="buttons">
+            <a href="currency-app.html">🚀 دەستپێکردن</a>
+            <a href="https://github.com/[username]/[repo]" target="_blank">📚 GitHub</a>
+        </div>
+        
+        <div class="info">
+            <h2>تایبەتمەندییەکان</h2>
+            <ul>
+                <li>نرخی دراو (دۆلار، یۆرۆ، پاوەند، تمەن، لیرە، ...)</li>
+                <li>نرخی زێڕ (عەیار ١٨، ٢١، ٢٢)</li>
+                <li>گۆڕینەوەی دراو</li>
+                <li>هەژماری گومرگ</li>
+                <li>هەژماری زەکات</li>
+                <li>گونجاو لەگەڵ مۆبایل و تابلێت</li>
+            </ul>
+        </div>
+        
+        <div class="info" style="margin-top: 20px; background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.3);">
+            <h2 style="color: #60a5fa;">⚠️ تێبینی</h2>
+            <p style="font-size: 0.95em; color: rgba(255, 255, 255, 0.7);">
+                بۆ نوێکردنەوەی ئۆتۆماتیکی نرخەکان، پێویستە سێرڤەری Node.js کاربکات.<br>
+                لە GitHub Pages، نرخەکان بە دەستی نوێ دەکرێنەوە.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

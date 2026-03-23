@@ -1,0 +1,44 @@
+{
+  "name": "kurdistan-currency-app",
+  "version": "1.0.0",
+  "description": "سیستەمی نرخی دراو و زێڕ بۆ کوردستان - وێب ئەپێکی تەواو بە سکراپینگی ئۆتۆماتیک لە Rudaw Index",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "scrape": "node rudaw-scraper.js",
+    "dev": "nodemon server.js",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "rudaw",
+    "scraper",
+    "currency",
+    "gold",
+    "kurdistan",
+    "exchange-rate",
+    "mobile-responsive",
+    "web-app"
+  ],
+  "author": "Kurdistan Currency App Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/[username]/[repo].git"
+  },
+  "bugs": {
+    "url": "https://github.com/[username]/[repo]/issues"
+  },
+  "homepage": "https://github.com/[username]/[repo]#readme",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^4.22.1",
+    "puppeteer": "^21.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
